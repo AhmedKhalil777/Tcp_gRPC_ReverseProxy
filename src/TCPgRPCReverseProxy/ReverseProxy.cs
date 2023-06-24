@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Sockets;
 using TCPgRPCReverseProxy.Options;
+using TCPgRPCReverseProxy.ReversProxyTechniques;
 using TCPgRPCReverseProxy.Scheduling;
 
 namespace TCPgRPCReverseProxy
@@ -12,9 +13,10 @@ namespace TCPgRPCReverseProxy
         private readonly ReverseProxyOptions _options;
         private readonly ILogger<ReverseProxy> _logger;
         private CancellationToken _cancellationToken = CancellationToken.None;
-
-        public ReverseProxy(ILogger<ReverseProxy> logger, IOptions<ReverseProxyOptions> options)
+        private readonly IReverseProxyTechnique _reverseProxy;
+        public ReverseProxy(ILogger<ReverseProxy> logger, IOptions<ReverseProxyOptions> options, IReverseProxyTechnique reverseProxyTechnique)
         {
+            _reverseProxy = reverseProxyTechnique;
             _options = options.Value;
             _logger = logger;
             var taskScheduler = new BlockingTaskScheduler(options?.Value?.RecievingThreadPoolCount ?? 5);
@@ -30,9 +32,11 @@ namespace TCPgRPCReverseProxy
             while (!stoppingToken.IsCancellationRequested)
             {
                 var client = await tcpListener.AcceptTcpClientAsync(_cancellationToken);
-                
+                var server = _reverseProxy.GetNextUpStream();
+                var handler = new TcpClinetReverseHandler(client, server, _options.MaxCountOfEmptyPackets);
+            
                 _logger.LogInformation("Accepting new client at: {time}", DateTimeOffset.Now);
-                _taskFactory?.StartNew(() => { }).ConfigureAwait(false);
+                _taskFactory?.StartNew(() => handler.ReverseProxyFromDownStreamToUpstream(stoppingToken)).ConfigureAwait(false);
             }
         }
 

@@ -10,6 +10,7 @@ namespace TCPgRPCReverseProxy.Options
     {
         public const string ReverseProxy = "ReverseProxy";
 
+        public int MaxCountOfEmptyPackets { get; set; } = 20;
         public int RecievingThreadPoolCount { get; set; } = 5;
         public int AcceptingClientsThreadPoolCount { get; set; } = 3;
         public TCPOptions TCPOptions { get; set; } = default!;

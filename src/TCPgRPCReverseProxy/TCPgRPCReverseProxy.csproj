@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,11 +7,23 @@
     <UserSecretsId>dotnet-TCPgRPCReverseProxy-69533afd-5755-4506-9c1b-0ce74fc52744</UserSecretsId>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Protobuf Include="Protos\UpstreamData.proto" GrpcServices="Client" />
+	</ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.23.3" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.54.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.56.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="System.Reactive.Linq" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Options\" />
+    <Folder Include="UpstreamClient\" />
   </ItemGroup>
 </Project>

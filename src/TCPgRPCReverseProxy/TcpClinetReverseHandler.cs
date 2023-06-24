@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Grpc.Net.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TCPgRPCReverseProxy.Exceptions;
+using TCPgRPCReverseProxy.Messages;
 
 namespace TCPgRPCReverseProxy
 {
@@ -19,7 +21,7 @@ namespace TCPgRPCReverseProxy
         public EventHandler OnGRPCRecieve { get; set; }
         public EventHandler OnGRPCDisconnected { get; set; }
 
-
+        private UpstreamDataReciever.UpstreamDataRecieverClient _gRPCClient;
 
         public TcpClinetReverseHandler(TcpClient client, string gRPCEndpoint, int maxCountOfEmptyPackets)
         {
@@ -29,6 +31,8 @@ namespace TCPgRPCReverseProxy
             IP = remoteEndPoint.Address.ToString();
             Port = remoteEndPoint.Port;
             MaxCountOfEmotyPackets = maxCountOfEmptyPackets;
+            var channel = GrpcChannel.ForAddress(GRPCEndpoint);
+            _gRPCClient = new UpstreamDataReciever.UpstreamDataRecieverClient(channel);
         }
 
 
@@ -56,6 +60,23 @@ namespace TCPgRPCReverseProxy
 
         private async ValueTask ForwardTogRPCClient(byte[] data, CancellationToken cancellationToken)
         {
+            try
+            {
+                var request = new UpstreamDataRequest
+                {
+                    Ip = IP,
+                    Port = Port,
+                    RawData = Google.Protobuf.ByteString.CopyFrom(data)
+                };
+                var response = await _gRPCClient.RecieveDataAsync(request, cancellationToken: cancellationToken);
+                //OnGRPCRecieve.Invoke(this, new EventArgs { });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
 
         }
 
@@ -85,7 +106,11 @@ namespace TCPgRPCReverseProxy
                     EmptyConsecutivePacketsCount++;
                     return false;
                 }
-                OnDataRecieved.Invoke(this, new EventArgs { });
+                else
+                {
+                    return true;
+                }
+                //OnDataRecieved.Invoke(this, new EventArgs { });
 
             }
             return false;
@@ -100,7 +125,7 @@ namespace TCPgRPCReverseProxy
                 try
                 {
                     await Stream.WriteAsync(bytes, cancellationToken);
-                    OnDataSent.Invoke(this, new EventArgs { });
+                   // OnDataSent.Invoke(this, new EventArgs { });
 
                 }
                 catch (Exception ex)
@@ -129,7 +154,7 @@ namespace TCPgRPCReverseProxy
         }
         public void Dispose()
         {
-            OnClientDisposed.Invoke(this, new EventArgs { });
+            //OnClientDisposed.Invoke(this, new EventArgs { });
             Client?.Close();
             Client?.Dispose();
         }

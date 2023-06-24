@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPgRPCReverseProxy", "TCPgRPCReverseProxy\TCPgRPCReverseProxy.csproj", "{9BEBD3B8-623E-4C05-8700-DE5BB33110E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCPgRPCReverseProxy", "TCPgRPCReverseProxy\TCPgRPCReverseProxy.csproj", "{9BEBD3B8-623E-4C05-8700-DE5BB33110E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPgRPCReverseProxy.Shared", "TCPgRPCReverseProxy.Shared\TCPgRPCReverseProxy.Shared.csproj", "{6D969ADE-657E-4C9E-ABDA-324672D45D26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GRPCService", "GRPCService\GRPCService.csproj", "{05DEA4AB-B8F7-4F02-A9AB-578F044CDAC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tye", "Tye", "{C040DA79-0D6A-4611-BE70-029E1E83BD06}"
+	ProjectSection(SolutionItems) = preProject
+		tye.yaml = tye.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +24,14 @@ Global
 		{9BEBD3B8-623E-4C05-8700-DE5BB33110E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BEBD3B8-623E-4C05-8700-DE5BB33110E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BEBD3B8-623E-4C05-8700-DE5BB33110E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D969ADE-657E-4C9E-ABDA-324672D45D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D969ADE-657E-4C9E-ABDA-324672D45D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D969ADE-657E-4C9E-ABDA-324672D45D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D969ADE-657E-4C9E-ABDA-324672D45D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05DEA4AB-B8F7-4F02-A9AB-578F044CDAC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05DEA4AB-B8F7-4F02-A9AB-578F044CDAC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05DEA4AB-B8F7-4F02-A9AB-578F044CDAC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05DEA4AB-B8F7-4F02-A9AB-578F044CDAC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

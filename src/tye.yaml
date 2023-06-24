@@ -1,0 +1,10 @@
+name : TCPgRPCReverseProxy
+services:
+  - name: upstreamServer1
+    project: GRPCService/GRPCService.csproj
+  - name: upstreamServer2
+    project: GRPCService/GRPCService.csproj
+  - name: upstreamServer3
+    project: GRPCService/GRPCService.csproj
+  - name: upstreamServer4
+    project: GRPCService/GRPCService.csproj

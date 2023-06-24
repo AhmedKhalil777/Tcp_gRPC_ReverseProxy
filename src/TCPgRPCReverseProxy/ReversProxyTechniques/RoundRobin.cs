@@ -10,19 +10,13 @@ namespace TCPgRPCReverseProxy.ReversProxyTechniques
 {
     public class RoundRobin : IReverseProxyTechnique
     {
-        private readonly Func<string, bool> _healthFunc;
         private readonly ServerAssignment[] _servers;
         private int _currentIndex = 0;
         private int _currentAssignmentCount = 0;
-        public RoundRobin(IEnumerable<ServerOptions> serverOptions, Func<string ,bool> healthFunc = null)
+        public RoundRobin(IEnumerable<ServerOptions> serverOptions)
         {
-            _healthFunc = healthFunc;
             _servers = serverOptions.OrderBy(x=> x.Weight)
-                                    .Select(x => new ServerAssignment { 
-                                        Server = x,
-                                        Assignments = 0,
-                                        IsHealthy = _healthFunc(x.ServergRPCEndpoint)
-                                    })
+                                    .Select(x => new ServerAssignment (x))
                                     .ToArray();
         }
         public string GetNextUpStream()

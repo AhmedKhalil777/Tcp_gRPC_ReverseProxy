@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "TCPgRPCReverseProxy.Messages";
+
+
+// The greeting service definition.
+service UpstreamDataReciever {
+  // Sends a greeting
+  rpc RecieveData (UpstreamDataRequest) returns (UpstreamDataResponse);
+
+  rpc Healthy(google.protobuf.Empty) returns(HealthResponse);
+
+}
+
+message HealthResponse {
+  optional bool healthy = 1;
+}
+
+message UpstreamDataRequest {
+    string ip = 1;
+    int32 port = 2;
+    bytes raw_data = 3;
+}  
+
+message UpstreamDataResponse {
+    bool recieved = 1;
+}  
